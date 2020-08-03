@@ -19,8 +19,15 @@ main = hspec $ do
             let z = defaultItem {  name= "ccc", freeChildren = [x,x]}
             let b = defaultItem {  name = "ddd"}
             let c = defaultItem {  name= "ccc", freeChildren = [b,b]}
-            let f = filterNameTree ["bbb","aaa"]
-            filter f [y,y, z] `shouldBe` [y,y]
+            let deep = defaultItem {name = "deep", freeChildren = [c,z,y]}
+             
+            filter (filterNameTree ["bbb","aaa"]) [y,y, z] `shouldBe` [y,y]
+            
+            filter (filterNameTree ["ccc", "aaa"]) [z,y,y,c,b] `shouldBe` [z]
+
+            filter (filterNameTree ["deep", "aaa"]) [deep] `shouldBe` []
+
+            filter (filterNameTree ["deep", "ccc", "ddd"]) [deep] `shouldBe` [deep]
 
 
     
