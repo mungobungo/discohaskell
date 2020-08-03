@@ -20,5 +20,18 @@ defaultItem = Item {Dsl.id = "1", amount= 1, name ="PAP_100", lockedChildren =[]
 filterName :: String -> (Item -> Bool)
 filterName fname = \x -> (name x) == fname
 
-absolute :: Int -> Int
-absolute x = x + 1
+filterNameTree :: [String] -> (Item -> Bool)
+-- filterNameTree [a,b]= \x -> 
+--                                 let nm = (name x) == a
+--                                     fn = filterName b
+--                                 in
+--                                     nm && ([] /= filter fn (freeChildren x))
+filterNameTree [a] = filterName a
+
+filterNameTree [] = \x -> True
+
+filterNameTree (a:rest) = \x -> 
+                                let fnx = (filterName a) x
+                                    fnt = filterNameTree rest
+                                in
+                                    fnx &&  ([] /= filter fnt (freeChildren x))
