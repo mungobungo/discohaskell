@@ -48,5 +48,6 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - disco
+    - hspec >= 2.7.1
    
   

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e7d78b1610118ef515869378d2bb7ed3f4be909831e6c1addc40258acec358d2
+-- hash: d1dfaf7c9df1b7fcae85be2cc49f11314bf06e9f781b528626a0672bc32ea9f1
 
 name:           disco
 version:        0.1.0.0
@@ -35,7 +35,6 @@ library
       src
   build-depends:
       base >=4.7 && <5
-    , hspec >=2.7.1
   default-language: Haskell2010
 
 executable disco-exe
@@ -48,7 +47,6 @@ executable disco-exe
   build-depends:
       base >=4.7 && <5
     , disco
-    , hspec >=2.7.1
   default-language: Haskell2010
 
 test-suite disco-test
