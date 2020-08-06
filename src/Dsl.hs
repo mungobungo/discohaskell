@@ -33,7 +33,7 @@ data Item = Item {
     discountedTotalPrice :: Maybe Int
 } deriving(Show, Eq)
 
-dummy = Item {iid = "1", amount= 1, value ="PAP_100", itype = "Photobook", lockedChildren =[], freeChildren = [], 
+dummy = Item {iid = "1", amount= 1, value ="dummyValue", itype = "DummyType", lockedChildren =[], freeChildren = [], 
     basePrice = 100, discountedBasePrice = Nothing, discountRule = Nothing, totalPrice = 10, discountedTotalPrice = Nothing
 }
 
