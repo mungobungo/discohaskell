@@ -1,11 +1,24 @@
 
-module Dsl where
+module Dsl (
+    dummy, 
+
+    Item(iid, amount, value, category, freeChildren, lockedChildren, basePrice, discountedBasePrice, discountRule, totalPrice, discountedTotalPrice),
+    filterValue,
+    filterValueTree,
+    filterTreeEqualAmount,
+    filterTreeLessOrEqualAmount,
+    filterTreeLessThanAmount,
+    filterTreeMoreThanAmount,
+    filterTreeMoreOrEqualAmount,
+    havingAmount,
+    havingProperty
+    ) where
 import Data.List.Split    
 
 data Item = Item {
-    id :: String,
+    iid :: String,
     amount :: Int,
-    name :: String,
+    value :: String,
     category :: String,
     lockedChildren :: [Item],
     freeChildren :: [Item],
@@ -16,29 +29,29 @@ data Item = Item {
     discountedTotalPrice :: Maybe Int
 } deriving(Show, Eq)
 
-defaultItem = Item {Dsl.id = "1", amount= 1, name ="PAP_100", category = "Photobook", lockedChildren =[], freeChildren = [], 
+dummy = Item {iid = "1", amount= 1, value ="PAP_100", category = "Photobook", lockedChildren =[], freeChildren = [], 
     basePrice = 100, discountedBasePrice = Nothing, discountRule = Nothing, totalPrice = 10, discountedTotalPrice = Nothing
 }
 
-filterName :: String -> (Item -> Bool)
-filterName "_" = \x -> True
-filterName fname = \x -> (name x) == fname
+filterValue :: String -> (Item -> Bool)
+filterValue "_" = \x -> True
+filterValue val = \x -> (value x) == val
 
 filterTreePredicate :: [String] -> (Item -> Bool) -> (Item->Bool)
 -- predicate is being used only on the lowest level
-filterTreePredicate [a] p = \x -> p x  && (filterName a) x
+filterTreePredicate [a] p = \x -> p x  && (filterValue a) x
 
 filterTreePredicate [] p = \x -> True
 
 filterTreePredicate (a:rest) p = \x -> 
-                                let fnx = (filterName a) x
+                                let fnx = (filterValue a) x
                                     fnt = filterTreePredicate rest p
                                 in
                                     fnx &&  ([] /= filter fnt (freeChildren x))
 
 
-filterNameTree :: [String] -> (Item -> Bool)
-filterNameTree items = filterTreePredicate items (\x -> True)
+filterValueTree :: [String] -> (Item -> Bool)
+filterValueTree items = filterTreePredicate items (\x -> True)
 
 
 filterTreeEqualAmount :: [String] -> Int -> (Item->Bool)
