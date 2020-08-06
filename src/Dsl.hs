@@ -6,7 +6,7 @@ module Dsl (
     filterProperty,
     filterValue,
     filterType,
-    filterValueTree,
+    filterPropertyTree,
     filterTreeEqualAmount,
     filterTreeLessOrEqualAmount,
     filterTreeLessThanAmount,
@@ -68,8 +68,8 @@ filterTreePredicate (a:rest) p = \x ->
                                     fnx &&  ([] /= filter fnt (freeChildren x))
 
 
-filterValueTree :: [String] -> (Item -> Bool)
-filterValueTree items = filterTreePredicate items (\x -> True)
+filterPropertyTree :: [String] -> (Item -> Bool)
+filterPropertyTree items = filterTreePredicate items (\x -> True)
 
 
 filterTreeEqualAmount :: [String] -> Int -> (Item->Bool)

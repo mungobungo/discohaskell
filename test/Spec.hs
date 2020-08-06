@@ -59,10 +59,10 @@ main = hspec $ do
             let b = dummy {  value = "ddd"}
             let c = dummy {  value= "ccc", freeChildren = [b,b]}
             let deep = dummy {value = "deep", freeChildren = [c,z,y]}           
-            filter (filterValueTree ["bbb","aaa"]) [y,y, z] `shouldBe` [y,y]
-            filter (filterValueTree ["ccc", "aaa"]) [z,y,y,c,b] `shouldBe` [z]
-            filter (filterValueTree ["deep", "aaa"]) [deep] `shouldBe` []
-            filter (filterValueTree ["deep", "ccc", "ddd"]) [deep] `shouldBe` [deep]
+            filter (filterPropertyTree ["bbb","aaa"]) [y,y, z] `shouldBe` [y,y]
+            filter (filterPropertyTree ["ccc", "aaa"]) [z,y,y,c,b] `shouldBe` [z]
+            filter (filterPropertyTree ["deep", "aaa"]) [deep] `shouldBe` []
+            filter (filterPropertyTree ["deep", "ccc", "ddd"]) [deep] `shouldBe` [deep]
         
         it "should work with yesno selector" $ do
             let page1 = dummy {value = "extraPage", amount =15}
