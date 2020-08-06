@@ -13,14 +13,20 @@ main = hspec $ do
                 filter (filterValue "xxx") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
                 filter (filterValue "yyy") [x,y, y,x,y,x]  `shouldBe` [y,y,y]
                 filter (filterValue "blabla") [x,y, y,x,y,x]  `shouldBe` []
+
             it "should work with wildcard" $ do
                 filter (filterValue "_") [x,y, y,x,y,x]  `shouldBe` [x,y, y,x,y,x]
             
             it "should not care about cases of values" $ do
                 filter (filterValue "XXX") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
                 filter (filterValue "XxX") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+            it "should work with val:xxx" $do
+                filter (filterValue "val:xxx") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+                filter (filterValue "val:yYy") [x,y, y,x,y,x]  `shouldBe` [y,y,y]
+                filter (filterValue "val:_") [x,y, y,x,y,x]  `shouldBe` [x,y, y,x,y,x]
+                filter (filterValue "val:blaBLA") [x,y, y,x,y,x]  `shouldBe` []
             
-            
+
         it "filterProperty should work for both val:alias and alias queries" $ do
             let x = dummy { value = "xxx"}
             let y = dummy { value= "yyy"}
