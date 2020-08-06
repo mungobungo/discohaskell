@@ -1,9 +1,12 @@
+
 module Dsl where
+import Data.List.Split    
 
 data Item = Item {
     id :: String,
     amount :: Int,
     name :: String,
+    category :: String,
     lockedChildren :: [Item],
     freeChildren :: [Item],
     basePrice :: Int,
@@ -13,11 +16,12 @@ data Item = Item {
     discountedTotalPrice :: Maybe Int
 } deriving(Show, Eq)
 
-defaultItem = Item {Dsl.id = "1", amount= 1, name ="PAP_100", lockedChildren =[], freeChildren = [], 
+defaultItem = Item {Dsl.id = "1", amount= 1, name ="PAP_100", category = "Photobook", lockedChildren =[], freeChildren = [], 
     basePrice = 100, discountedBasePrice = Nothing, discountRule = Nothing, totalPrice = 10, discountedTotalPrice = Nothing
 }
 
 filterName :: String -> (Item -> Bool)
+filterName "_" = \x -> True
 filterName fname = \x -> (name x) == fname
 
 filterTreePredicate :: [String] -> (Item -> Bool) -> (Item->Bool)
@@ -51,3 +55,15 @@ filterTreeMoreOrEqualAmount items limit = filterTreePredicate items (\x ->  Dsl.
 
 filterTreeMoreThanAmount :: [String] -> Int -> (Item->Bool)
 filterTreeMoreThanAmount items limit = filterTreePredicate items (\x -> Dsl.amount x > limit)
+
+havingAmount :: String -> String -> Int -> [Item] -> [Item]
+havingAmount expression ">" amount items = 
+    filter (filterTreeMoreThanAmount (splitOn "/" expression) amount) items
+havingAmount expression ">=" amount items = 
+    filter (filterTreeMoreOrEqualAmount (splitOn "/" expression) amount) items
+havingAmount expression "<" amount items = 
+    filter (filterTreeLessThanAmount (splitOn "/" expression) amount) items
+havingAmount expression "<=" amount items = 
+    filter (filterTreeLessOrEqualAmount (splitOn "/" expression) amount) items
+havingAmount expression "=" amount items = 
+    filter (filterTreeEqualAmount (splitOn "/" expression) amount) items
