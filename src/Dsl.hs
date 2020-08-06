@@ -3,6 +3,7 @@ module Dsl (
     dummy, 
 
     Item(iid, amount, value, category, freeChildren, lockedChildren, basePrice, discountedBasePrice, discountRule, totalPrice, discountedTotalPrice),
+    filterProperty,
     filterValue,
     filterValueTree,
     filterTreeEqualAmount,
@@ -36,6 +37,9 @@ dummy = Item {iid = "1", amount= 1, value ="PAP_100", category = "Photobook", lo
 filterValue :: String -> (Item -> Bool)
 filterValue "_" = \x -> True
 filterValue val = \x -> (value x) == val
+
+filterProperty :: String -> (Item->Bool)
+filterProperty s  = filterValue s
 
 filterTreePredicate :: [String] -> (Item -> Bool) -> (Item->Bool)
 -- predicate is being used only on the lowest level

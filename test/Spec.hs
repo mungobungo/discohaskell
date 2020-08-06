@@ -10,7 +10,9 @@ main = hspec $ do
         it "shoudl work with filter" $ do
             let x = dummy {iid = "1",  value = "aaa"}
             let y = dummy {iid = "2",  value= "bbb"}
-            filter (filterValue "aaa") [x,y, y,x,y,x] `shouldBe` [x,x,x]
+            let l = [x,y, y,x,y,x]
+            filter (filterValue "aaa") l `shouldBe` [x,x,x]
+            filter (filterProperty "aaa") l `shouldBe` [x,x,x]
         it "should work with filter extras" $ do
             let x = dummy { value = "aaa"}
             let y = dummy {  value= "bbb", freeChildren = [x,x]}
