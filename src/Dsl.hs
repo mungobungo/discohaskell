@@ -67,3 +67,6 @@ havingAmount expression "<=" amount items =
     filter (filterTreeLessOrEqualAmount (splitOn "/" expression) amount) items
 havingAmount expression "=" amount items = 
     filter (filterTreeEqualAmount (splitOn "/" expression) amount) items
+
+havingProperty :: String -> [Item] -> [Item]
+havingProperty expression = havingAmount expression ">=" 0

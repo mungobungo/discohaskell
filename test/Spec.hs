@@ -42,7 +42,7 @@ main = hspec $ do
 
             filter (filterTreeMoreOrEqualAmount ["photobook", "extraPage"] 10) [x, y] `shouldBe` [x,y]
             filter (filterTreeMoreThanAmount ["photobook", "extraPage"] 10) [x, y] `shouldBe` [x]
-        it "should work with multiple pap selectors" $ do
+        describe "should work with HAVING" $ do
             let photobook = defaultItem{ category="Photobook"}
             let extraPage = defaultItem{name="extraPage", amount = 10}
 
@@ -54,11 +54,11 @@ main = hspec $ do
             let cart = [book1, book1extra, book1extra, book2, book2extra, book1extra]
 
             -- splitOn "/" "photobook/extrapage" `shouldBe` ["photobook", "extrapage"] 
-            
-            havingAmount "pap_194/extraPage" ">" 10 cart `shouldBe` []
-            havingAmount "pap_324/extraPage" ">" 10 cart `shouldBe` [book2extra]
-            havingAmount "_/extraPage" ">=" 10 cart `shouldBe` [book1extra, book1extra, book2extra, book1extra]
-            
-
+            it "should work with having amount selectors" $ do
+                havingAmount "pap_194/extraPage" ">" 10 cart `shouldBe` []
+                havingAmount "pap_324/extraPage" ">" 10 cart `shouldBe` [book2extra]
+                havingAmount "_/extraPage" ">=" 10 cart `shouldBe` [book1extra, book1extra, book2extra, book1extra]
+            it "should work with having property selectors" $ do
+                havingProperty "pap_194/extraPage" cart `shouldBe` [book1extra, book1extra, book1extra]
 
     
