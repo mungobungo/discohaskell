@@ -49,16 +49,20 @@ filterType typ = \x -> map toUpper (itype x) == map toUpper typ
 
 
 filterProperty :: String -> (Item->Bool)
-filterProperty s  = filterValue s
+filterProperty "_" = \x -> True
+filterProperty ('v':'a':'l':':': x) = filterValue x
+filterProperty ('t':'y':'p':'e':':': x) = filterType x
+filterProperty s  = \x -> filterValue s x || filterType s x
+
 
 filterTreePredicate :: [String] -> (Item -> Bool) -> (Item->Bool)
 -- predicate is being used only on the lowest level
-filterTreePredicate [a] p = \x -> p x  && (filterValue a) x
+filterTreePredicate [a] p = \x -> p x  && (filterProperty a) x
 
 filterTreePredicate [] p = \x -> True
 
 filterTreePredicate (a:rest) p = \x -> 
-                                let fnx = (filterValue a) x
+                                let fnx = (filterProperty a) x
                                     fnt = filterTreePredicate rest p
                                 in
                                     fnx &&  ([] /= filter fnt (freeChildren x))

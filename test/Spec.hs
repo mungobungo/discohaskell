@@ -46,9 +46,11 @@ main = hspec $ do
                 filter (filterType "type:blaBLA") [x,y, y,x,y,x]  `shouldBe` []    
 
         it "filterProperty should work for both val:alias and alias queries" $ do
-            let x = dummy { value = "xxx"}
+            let x = dummy { value = "xxx", itype = "xXx"}
             let y = dummy { value= "yyy"}
             filter (filterProperty "xxx") [x,y, y,x,y,x] `shouldBe` [x,x,x]
+            filter (filterProperty "val:xxx") [x,y, y,x,y,x] `shouldBe` [x,x,x]
+            filter (filterProperty "type:xxx") [x,y, y,x,y,x] `shouldBe` [x,x,x]
 
         it "should work with filter extras" $ do
             let x = dummy { value = "aaa"}
@@ -61,6 +63,7 @@ main = hspec $ do
             filter (filterValueTree ["ccc", "aaa"]) [z,y,y,c,b] `shouldBe` [z]
             filter (filterValueTree ["deep", "aaa"]) [deep] `shouldBe` []
             filter (filterValueTree ["deep", "ccc", "ddd"]) [deep] `shouldBe` [deep]
+        
         it "should work with yesno selector" $ do
             let page1 = dummy {value = "extraPage", amount =15}
             let page2 = dummy {value = "extraPage", amount =10}
@@ -95,6 +98,7 @@ main = hspec $ do
                 havingAmount "pap_194/val:extraPage" ">" 10 cart `shouldBe` []
                 havingAmount "pap_324/extraPage" ">" 10 cart `shouldBe` [book2extra]
                 havingAmount "_/extraPage" ">=" 10 cart `shouldBe` [book1extra, book1extra, book2extra, book1extra]
+            
             it "should work with having property selectors" $ do
                 havingProperty "pap_194/extraPage" cart `shouldBe` [book1extra, book1extra, book1extra]
                 havingProperty "_/extraPage" cart `shouldBe` [book1extra, book1extra, book2extra, book1extra]
