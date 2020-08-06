@@ -5,6 +5,7 @@ module Dsl (
     Item(iid, itype, value, amount, freeChildren, lockedChildren, basePrice, discountedBasePrice, discountRule, totalPrice, discountedTotalPrice),
     filterProperty,
     filterValue,
+    filterType,
     filterValueTree,
     filterTreeEqualAmount,
     filterTreeLessOrEqualAmount,
@@ -40,6 +41,12 @@ filterValue :: String -> (Item -> Bool)
 filterValue "_" = \x -> True
 filterValue ('v':'a':'l':':':x) = filterValue x
 filterValue val = \x -> map toUpper (value x) == map toUpper val
+
+filterType :: String -> (Item -> Bool)
+filterType "_" = \x -> True
+filterType ('t':'y':'p':'e':':':x) = filterType x
+filterType typ = \x -> map toUpper (itype x) == map toUpper typ
+
 
 filterProperty :: String -> (Item->Bool)
 filterProperty s  = filterValue s

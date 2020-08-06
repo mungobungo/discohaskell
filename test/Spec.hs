@@ -25,7 +25,25 @@ main = hspec $ do
                 filter (filterValue "val:yYy") [x,y, y,x,y,x]  `shouldBe` [y,y,y]
                 filter (filterValue "val:_") [x,y, y,x,y,x]  `shouldBe` [x,y, y,x,y,x]
                 filter (filterValue "val:blaBLA") [x,y, y,x,y,x]  `shouldBe` []
+        context "filterType" $ do
+            let x = dummy { itype = "xxx"}
+            let y = dummy { itype = "yyy"}
+            it "should work in positive and negative cases" $ do
+                filter (filterType "xxx") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+                filter (filterType "yyy") [x,y, y,x,y,x]  `shouldBe` [y,y,y]
+                filter (filterType "blabla") [x,y, y,x,y,x]  `shouldBe` []
+
+            it "should work with wildcard" $ do
+                filter (filterType "_") [x,y, y,x,y,x]  `shouldBe` [x,y, y,x,y,x]
             
+            it "should not care about cases of values" $ do
+                filter (filterType "XXX") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+                filter (filterType "XxX") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+            it "should work with type:xxx" $do
+                filter (filterType "type:xxx") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+                filter (filterType "type:yYy") [x,y, y,x,y,x]  `shouldBe` [y,y,y]
+                filter (filterType "type:_") [x,y, y,x,y,x]  `shouldBe` [x,y, y,x,y,x]
+                filter (filterType "type:blaBLA") [x,y, y,x,y,x]  `shouldBe` []    
 
         it "filterProperty should work for both val:alias and alias queries" $ do
             let x = dummy { value = "xxx"}
@@ -74,7 +92,7 @@ main = hspec $ do
 
             -- splitOn "/" "photobook/extrapage" `shouldBe` ["photobook", "extrapage"] 
             it "should work with having amount selectors" $ do
-                havingAmount "pap_194/extraPage" ">" 10 cart `shouldBe` []
+                havingAmount "pap_194/val:extraPage" ">" 10 cart `shouldBe` []
                 havingAmount "pap_324/extraPage" ">" 10 cart `shouldBe` [book2extra]
                 havingAmount "_/extraPage" ">=" 10 cart `shouldBe` [book1extra, book1extra, book2extra, book1extra]
             it "should work with having property selectors" $ do
