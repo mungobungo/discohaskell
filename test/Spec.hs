@@ -43,7 +43,7 @@ main = hspec $ do
             filter (filterTreeMoreOrEqualAmount ["photobook", "extraPage"] 10) [x, y] `shouldBe` [x,y]
             filter (filterTreeMoreThanAmount ["photobook", "extraPage"] 10) [x, y] `shouldBe` [x]
         describe "should work with HAVING" $ do
-            let photobook = dummy{ category="Photobook"}
+            let photobook = dummy{ itype="Photobook"}
             let extraPage = dummy{value="extraPage", amount = 10}
 
             let book1 = photobook{value= "pap_194"}

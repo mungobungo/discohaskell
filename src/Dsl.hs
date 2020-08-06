@@ -2,7 +2,7 @@
 module Dsl (
     dummy, 
 
-    Item(iid, amount, value, category, freeChildren, lockedChildren, basePrice, discountedBasePrice, discountRule, totalPrice, discountedTotalPrice),
+    Item(iid, itype, value, amount, freeChildren, lockedChildren, basePrice, discountedBasePrice, discountRule, totalPrice, discountedTotalPrice),
     filterProperty,
     filterValue,
     filterValueTree,
@@ -18,9 +18,10 @@ import Data.List.Split
 
 data Item = Item {
     iid :: String,
-    amount :: Int,
+    
+    itype :: String,
     value :: String,
-    category :: String,
+    amount :: Int,
     lockedChildren :: [Item],
     freeChildren :: [Item],
     basePrice :: Int,
@@ -30,7 +31,7 @@ data Item = Item {
     discountedTotalPrice :: Maybe Int
 } deriving(Show, Eq)
 
-dummy = Item {iid = "1", amount= 1, value ="PAP_100", category = "Photobook", lockedChildren =[], freeChildren = [], 
+dummy = Item {iid = "1", amount= 1, value ="PAP_100", itype = "Photobook", lockedChildren =[], freeChildren = [], 
     basePrice = 100, discountedBasePrice = Nothing, discountRule = Nothing, totalPrice = 10, discountedTotalPrice = Nothing
 }
 
