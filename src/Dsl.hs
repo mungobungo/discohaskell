@@ -13,7 +13,8 @@ module Dsl (
     filterTreeMoreThanAmount,
     filterTreeMoreOrEqualAmount,
     havingAmount,
-    havingProperty
+    havingProperty,
+    havingPropertyValueIn
     ) where
 import Data.Char
 import Data.List.Split    
@@ -100,4 +101,12 @@ havingAmount expression "=" amount items =
     filter (filterTreeEqualAmount (splitOn "/" expression) amount) items
 
 havingProperty :: String -> [Item] -> [Item]
-havingProperty expression = havingAmount expression ">=" 0
+havingProperty expression items = filter (filterPropertyTree (splitOn "/" expression)) items
+
+havingPropertyValueIn :: String -> [String] -> [Item] -> [Item]
+
+havingPropertyValueIn expression possibleValues items = 
+    let exp = splitOn "/" expression
+        pred = filterTreePredicate exp (\x -> elem (value x) possibleValues) 
+    in  
+        filter pred items

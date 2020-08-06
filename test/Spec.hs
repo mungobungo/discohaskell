@@ -128,7 +128,20 @@ main = hspec $ do
                 havingProperty "_/extraPage" cart `shouldBe` [book1extra, book1extra, book2extra, book1extra]
             
             it "should work with property IN selectors" $ do
-                let ct = dummy{value = "linen"}
-                let zwartLeer = dummy{value = "zwartLeer"}
-                1 `shouldBe` 1
+                let linenCover = dummy{itype = "cover", value = "linen"}
+                let zwartLinen = dummy{itype = "coverType", value = "zwartLinen"}
+                let blauLinen = dummy{itype = "coverType", value = "blauLinen"}
+                
+                let leaterCover = dummy{itype = "cover", value = "leather"}
+                let zwartLeater = dummy{itype = "coverType", value = "zwartLeather"}
+                let blauLeater = dummy{itype = "coverType", value = "blauLeather"}
+                
+                let blackLinen = linenCover{freeChildren = [zwartLinen]}
+
+                let blueLinen = linenCover{freeChildren = [blauLinen]}
+
+
+                havingPropertyValueIn "cover/coverType" ["zwartLinen"] [blackLinen, blueLinen] `shouldBe` [blackLinen]
+                havingPropertyValueIn "cover/coverType" ["zwartLeather"] [blackLinen, blueLinen] `shouldBe` []
+                
     
