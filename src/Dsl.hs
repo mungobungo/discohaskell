@@ -14,6 +14,7 @@ module Dsl (
     havingAmount,
     havingProperty
     ) where
+import Data.Char
 import Data.List.Split    
 
 data Item = Item {
@@ -37,7 +38,7 @@ dummy = Item {iid = "1", amount= 1, value ="PAP_100", itype = "Photobook", locke
 
 filterValue :: String -> (Item -> Bool)
 filterValue "_" = \x -> True
-filterValue val = \x -> (value x) == val
+filterValue val = \x -> map toUpper (value x) == map toUpper val
 
 filterProperty :: String -> (Item->Bool)
 filterProperty s  = filterValue s

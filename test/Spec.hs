@@ -6,13 +6,26 @@ main = hspec $ do
     describe "rune one" $ do
         it "getting someting" $
             1 `shouldBe` 1
-          
-        it "shoudl work with filter" $ do
-            let x = dummy {iid = "1",  value = "aaa"}
-            let y = dummy {iid = "2",  value= "bbb"}
-            let l = [x,y, y,x,y,x]
-            filter (filterValue "aaa") l `shouldBe` [x,x,x]
-            filter (filterProperty "aaa") l `shouldBe` [x,x,x]
+        context "filterValue" $ do
+            let x = dummy { value = "xxx"}
+            let y = dummy {  value= "yyy"}
+            it "should work in positive and negative cases" $ do
+                filter (filterValue "xxx") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+                filter (filterValue "yyy") [x,y, y,x,y,x]  `shouldBe` [y,y,y]
+                filter (filterValue "blabla") [x,y, y,x,y,x]  `shouldBe` []
+            it "should work with wildcard" $ do
+                filter (filterValue "_") [x,y, y,x,y,x]  `shouldBe` [x,y, y,x,y,x]
+            
+            it "should not care about cases of values" $ do
+                filter (filterValue "XXX") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+                filter (filterValue "XxX") [x,y, y,x,y,x]  `shouldBe` [x,x,x]
+            
+            
+        it "filterProperty should work for both val:alias and alias queries" $ do
+            let x = dummy { value = "xxx"}
+            let y = dummy { value= "yyy"}
+            filter (filterProperty "xxx") [x,y, y,x,y,x] `shouldBe` [x,x,x]
+
         it "should work with filter extras" $ do
             let x = dummy { value = "aaa"}
             let y = dummy {  value= "bbb", freeChildren = [x,x]}
