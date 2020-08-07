@@ -14,7 +14,8 @@ module Dsl (
     filterTreeMoreOrEqualAmount,
     havingAmount,
     havingProperty,
-    havingPropertyValueIn
+    havingPropertyValueIn,
+    countVariants
     ) where
 import Data.Char
 import Data.List.Split    
@@ -110,3 +111,13 @@ havingPropertyValueIn expression possibleValues items =
         pred = filterTreePredicate exp (\x -> elem (value x) possibleValues) 
     in  
         filter pred items
+
+countVariants :: [String] -> [Item] -> Int
+countVariants [pred] [x] = if filterProperty pred x then amount x else 0
+countVariants (pred : rest) [x]  = if filterProperty pred x then
+                                    let childVariants = sum (map (\c -> countVariants rest [c]) (freeChildren x))
+                                    in (amount x) * childVariants
+                                else 
+                                    0
+
+

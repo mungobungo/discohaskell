@@ -6,6 +6,20 @@ main = hspec $ do
     describe "rune one" $ do
         it "getting someting" $
             1 `shouldBe` 1
+        context "sum amount" $ do
+            let c1 = dummy {value = "c1", amount = 13}
+            let c2 = dummy{value = "c2", amount = 11}
+            let c3 = dummy{value = "c3", amount = 22, freeChildren = [c1]}
+            let p1 = dummy { value = "xxx", amount = 2, freeChildren = [c1, c2, c1, c3]}
+            let p2 = dummy {  value= "yyy", amount = 1, freeChildren = [c2]}
+            let p3 = dummy {value = "zzz", amount =42}
+            it "should calculate correcty with parent only one" $ do
+                countVariants ["zzz"] [p3] `shouldBe` 42
+                countVariants ["xxx"] [p1] `shouldBe` 2
+                countVariants ["c1"] [c1] `shouldBe` 13
+                countVariants ["xxx","c1"]  [p1] `shouldBe` 52 
+                countVariants ["xxx", "c2"] [p1] `shouldBe` 22
+                countVariants ["xxx", "c3", "c1"] [p1] `shouldBe` 2* 22* 13
         context "filterValue" $ do
             let x = dummy { value = "xxx"}
             let y = dummy {  value= "yyy"}
