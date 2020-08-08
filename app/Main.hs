@@ -58,5 +58,5 @@ goLeft (Node _ l _, bs) = (l, L:bs)
 goRight :: (Tree a, BreadCrumbs) -> (Tree a, BreadCrumbs)
 goRight (Node _ _ r, bs) = (r, R:bs)
 
-main :: IO ()
+main :: IO  ()
 main = someFunc
